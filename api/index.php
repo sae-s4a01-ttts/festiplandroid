@@ -64,19 +64,19 @@ function authentification($authLog, $authPwd) {
 
         $stmt = $pdo->prepare($sql);
 
-        $stmt->bindParam(":authLog", $identifiant);
+        $stmt->bindParam(":authLog", $authLog);
 
         $stmt->execute();
 
         $user = $stmt->fetch();
 
-        if (!$user || !password_verify($authPwd, $user["passwordUser"])) {
+        if (!$user || !password_verify($authPwd, $user["passwordUser"]) {
             $res['statut'] = "KO";
-            $res['message'] = "Identifiant ou mot de passe incorrect";
+            $res['message'] = "Identifiant ou mot de passe incorrect ";
             $code = 404;
         } else {
             $res['statut'] = "OK";
-            $res['id'] = $idUser;
+            $res['id'] = $user["idUser"];
             $code = 200;
         }
 
