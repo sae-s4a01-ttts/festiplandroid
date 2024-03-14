@@ -31,8 +31,13 @@ if(!empty($_GET['req'])) {
 
     switch ($url[0]) {
         case 'authentification':
-            // TODO : Faire le code de l'authentification
-            authentification();
+            if(isset($_POST['authLog']) && isset($_POST['authPwd'])) {
+                authentification($_POST['authLog'], $_POST['authPwd']);
+            } else {
+                $res['statut'] = "KO";
+                $res['message'] = "Données d'utilisateur invalides";
+                sendJSON($res, 400);
+            }
             break;
         
         default:
@@ -47,8 +52,40 @@ if(!empty($_GET['req'])) {
     sendJSON($res, 404);
 }
 
-function authentification() {
+function authentification($authLog, $authPwd) {
+    $pdo = getPDO();
+    $code = 500;
 
+    try {
+
+        $sql = "SELECT idUser, nomUser, prenomUser, loginUser, passwordUser
+                FROM users 
+                WHERE loginUser = :authLog";
+
+        $stmt = $pdo->prepare($sql);
+
+        $stmt->bindParam(":authLog", $identifiant);
+
+        $stmt->execute();
+
+        $user = $stmt->fetch();
+
+        if (!$user || !password_verify($authPwd, $user["passwordUser"])) {
+            $res['statut'] = "KO";
+            $res['message'] = "Identifiant ou mot de passe incorrect";
+            $code = 404;
+        } else {
+            $res['statut'] = "OK";
+            $res['id'] = $idUser;
+            $code = 200;
+        }
+
+    } catch (PDOException $e) {
+        $res['statut'] = "KO";
+        $res['message'] = "Problème connexion base de données";
+    }
+
+    sendJSON($res, $code);
 }
 
 function sendJSON($res, $code) {
