@@ -19,9 +19,9 @@ function getPDO() {
         $pdo = new PDO($dsn,$user,$pass,$options);    // Connexion PDO
         return $pdo;
     } catch(PDOException $e) {
-        $infos['Statut'] = "KO";
-        $infos['message'] = "Problème connexion base de données";
-        sendJSON($infos, 500);
+        $res['statut'] = "KO";
+        $res['message'] = "Problème connexion base de données";
+        sendJSON($res, 500);
     }
 }
 
