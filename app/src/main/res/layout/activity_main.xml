@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity"
+    android:stretchColumns="0"
+    android:padding="30dp"
+    android:background="@color/background">
+
+    <TableRow>
+
+        <TextView
+            android:id="@+id/namePage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/name_page"
+            android:textAlignment="center" />
+
+    </TableRow>
+
+    <TableRow>
+
+        <View
+            android:layout_width="200dp"
+            android:layout_height="2dp"></View>
+
+    </TableRow>
+
+    <TableRow>
+
+        <TextView
+            android:id="@+id/labelId"
+            android:text="@string/label_id" />
+
+    </TableRow>
+
+    <TableRow>
+
+        <EditText
+            android:id="@+id/inputId"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="text" />
+
+    </TableRow>
+
+    <TableRow>
+
+        <TextView
+            android:id="@+id/labelMdp"
+            android:text="@string/label_mdp" />
+
+    </TableRow>
+
+    <TableRow>
+
+        <EditText
+            android:id="@+id/inputMdp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textPassword" />
+
+    </TableRow>
+
+    <TableRow>
+
+        <Button
+            android:id="@+id/btnSeConnecter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/label_btn_se_connecter" />
+
+    </TableRow>
+
+    <TableRow>
+
+        <Button
+            android:id="@+id/btnMdpOublie"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/label_btn_mdp_oublie" />
+
+    </TableRow>
+
+    <TableRow>
+
+        <Button
+            android:id="@+id/btnIdOublie"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/label_btn_id_oublie" />
+
+    </TableRow>
+
+</TableLayout>

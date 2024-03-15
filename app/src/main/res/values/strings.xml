@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">Festiplandroid</string>
+
+    <string name="name_page">Connexion</string>
+
+    <string name="label_id">Identifiant : </string>
+    <string name="label_mdp">Mot de passe : </string>
+
+    <string name="label_btn_se_connecter">Se connecter</string>
+
+    <string name="label_btn_mdp_oublie">Mot de passe oublié ?</string>
+    <string name="label_btn_id_oublie">Identifiant oublié ?</string>
+    
+    <string name="err_id_mdp_incorrect">Identifiant ou mot de passe incorrect</string>
+</resources>
