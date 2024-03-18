@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">FestiplAndroid</string>
+
+    <string name="listeFestivalTitreActivite">Liste des festivals</string>
+    <string name="listeFestivalLabelCategorie">Catégorie :</string>
+    <string name="listeFestivalLabelDate">Date de déroulement :</string>
+    <string name="listeFestivalLabelDescription">Description :</string>
+    <string name="listeFestivalLabelVille">Ville :</string>
+    <string name="listeFestivalLabelCodeP">Code Postal :</string>
+    <string name="listeFestivalLibelleBtnFavori">Mes favoris</string>
 </resources>
