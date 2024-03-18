@@ -15,8 +15,11 @@
             android:id="@+id/namePage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/inter_semibold"
             android:text="@string/name_page"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="36sp" />
 
     </TableRow>
 
@@ -24,7 +27,10 @@
 
         <View
             android:layout_width="200dp"
-            android:layout_height="2dp"></View>
+            android:layout_height="2dp"
+            android:background="@color/white"
+            android:layout_marginBottom="60dp"
+            android:layout_marginTop="30dp"></View>
 
     </TableRow>
 
@@ -32,7 +38,8 @@
 
         <TextView
             android:id="@+id/labelId"
-            android:text="@string/label_id" />
+            android:text="@string/label_id"
+            android:theme="@style/Label_Authentification"/>
 
     </TableRow>
 
@@ -43,7 +50,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:inputType="text" />
+            android:inputType="text"
+            android:textColor="@color/white"
+            android:textSize="16sp"/>
 
     </TableRow>
 
@@ -51,7 +60,8 @@
 
         <TextView
             android:id="@+id/labelMdp"
-            android:text="@string/label_mdp" />
+            android:text="@string/label_mdp"
+            android:theme="@style/Label_Authentification"/>
 
     </TableRow>
 
@@ -62,7 +72,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:inputType="textPassword" />
+            android:inputType="textPassword"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
 
     </TableRow>
 
@@ -72,8 +84,19 @@
             android:id="@+id/btnSeConnecter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/label_btn_se_connecter" />
+            android:backgroundTint="@color/green_btn"
+            android:textColor="@color/black"
+            android:text="@string/label_btn_se_connecter"
+            android:layout_marginTop="30dp" />
 
+    </TableRow>
+
+    <TableRow
+        android:layout_weight="1">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="" />
     </TableRow>
 
     <TableRow>
@@ -82,6 +105,8 @@
             android:id="@+id/btnMdpOublie"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:backgroundTint="@color/red_btn"
+            android:textColor="@color/black"
             android:text="@string/label_btn_mdp_oublie" />
 
     </TableRow>
@@ -92,6 +117,8 @@
             android:id="@+id/btnIdOublie"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:backgroundTint="@color/red_btn"
+            android:textColor="@color/black"
             android:text="@string/label_btn_id_oublie" />
 
     </TableRow>

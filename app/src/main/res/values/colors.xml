@@ -3,7 +3,7 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
-    <color name="background">#2A2A2A</color>
-    <color name="green_btn">#15BF1C</color>
-    <color name="red_btn">#F40000</color>
+    <color name="background">#FF2A2A2A</color>
+    <color name="green_btn">#FF15BF1C</color>
+    <color name="red_btn">#FFF40000</color>
 </resources>
