@@ -8,4 +8,13 @@
     <string name="listeFestivalLabelVille">Ville :</string>
     <string name="listeFestivalLabelCodeP">Code Postal :</string>
     <string name="listeFestivalLibelleBtnFavori">Mes favoris</string>
+
+    <string name="detailsFestivalTitreActivite">"Informations du festival"</string>
+    <string name="festivalLibelleListeSpectacles">"Liste des spectacles :"</string>
+    <string name="festivalLibelleListeScenes">"Scenes :"</string>
+    <string name="festivalLibelleResponsable">"Responsable :"</string>
+    <string name="festivalLibelleOrganisateurs">"Organisateurs :"</string>
+
+
+
 </resources>
