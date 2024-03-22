@@ -3,7 +3,7 @@ function getPDO() {
     $host='localhost';	// Serveur de BD
     $db='festiplan';    // Nom de la BD
     $user='root';		// User 
-    $pass='root';		// Mot de passe
+    $pass='ROOT';		// Mot de passe
     $charset='utf8mb4';	// charset utilisé
 
     // Réglage des options
@@ -38,6 +38,16 @@ if(!empty($_GET['req'])) {
                 $res['message'] = "Données d'utilisateur invalides";
                 sendJSON($res, 400);
             }
+            break;
+
+        case 'infosfestival':
+                if (isset($_POST['festivalId'])) {
+                    infosFestival($_POST["festivalId"]);
+                } else {
+                    $res['statut'] = "KO";
+                    $res['message'] = "Données invalides";
+                    sendJSON($res, 400);
+                }
             break;
         
         default:
@@ -87,6 +97,64 @@ function authentification($authLog, $authPwd) {
 
     sendJSON($res, $code);
 }
+
+function infosFestival($festivalId) {
+    $pdo = getPDO();
+    $code = 200;
+
+    try {
+        // récupération des données de la table festival
+        $requeteFestivalInfos = "SELECT nomFestival, descriptionFestival, images.nomImage, dateDebutFestival, dateFinFestival, idResponsable, ville, codePostal
+                                 FROM festivals
+                                 JOIN images ON images.idImage = festivals.idImage
+                                 WHERE festivals.idFestival = :festivalId";
+
+        $stmt = $pdo->prepare($requeteFestivalInfos);
+
+        $stmt->bindParam(":festivalId", $festivalId);
+
+        $stmt->execute();
+
+        $festivalInfos = $stmt->fetch();
+
+        // récupération des catégories du festival
+        $requeteFestivalCategorie = "SELECT nomCategorie
+              FROM categories
+              JOIN categoriefestival ON categoriefestival.idCategorie = categories.idCategorie
+              WHERE categoriefestival.idFestival = :festivalId";
+        
+        $stmt2 = $pdo->prepare($requeteFestivalCategorie);
+        $stmt2->bindParam("festivalId", $festivalId);
+        $stmt2->execute();
+        $nomCat = $stmt2->fetchAll();
+
+        // récupération des spectacles du festival
+        $requeteSpectacles = "SELECT titreSpectacle, dureeSpectacle
+                              FROM spectacles
+                              JOIN composer ON composer.idSpectacle = spectacles.idSpectacle
+                              WHERE composer.idFestival = :festivalId";
+
+        $s = $pdo->prepare($requeteSpectacles);
+        $s->bindParam(":festivalId", $festivalId);
+        $s->execute();
+        $nomSpec = $s->fetchAll();
+
+        // Composition des données
+        $res = [];
+        $res[] = $festivalInfos;
+        $res[] = $nomCat;
+        $res[] = $nomSpec;
+
+        
+        
+    } catch (PDOException $e) {
+        $code = 500;
+        $res['statut'] = "KO";
+        $res['message'] = "Problème connexion base de données";
+    }
+    
+    sendJSON($res, $code);
+} 
 
 function sendJSON($res, $code) {
     header("Access-Control-Allow-Origin: *");
