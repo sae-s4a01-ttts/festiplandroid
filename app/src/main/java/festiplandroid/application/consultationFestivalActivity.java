@@ -3,13 +3,12 @@ package festiplandroid.application;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class MainActivity extends AppCompatActivity {
+public class consultationFestivalActivity extends AppCompatActivity {
 
     private ListView listeFestivals;
 
@@ -18,7 +17,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.consultation_festival);
 
         listeFestivals = findViewById(R.id.listeFestival);
 
