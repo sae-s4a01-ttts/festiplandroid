@@ -6,48 +6,121 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity"
     android:stretchColumns="0"
-    android:background="@color/grey">
+    android:padding="30dp"
+    android:background="@color/background">
 
+    <TableRow>
 
-    <TableRow
-        android:background="@color/black">
-
-        <ImageView
+        <TextView
+            android:id="@+id/namePage"
             android:layout_width="wrap_content"
-            android:layout_height="85dp"
-            android:layout_gravity="left"
-            android:paddingVertical="10dp"
-            android:src="@drawable/logoFestiplan" />
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/inter_semibold"
+            android:text="@string/name_page"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="36sp" />
+
+    </TableRow>
+
+    <TableRow>
+
+        <View
+            android:layout_width="200dp"
+            android:layout_height="2dp"
+            android:background="@color/white"
+            android:layout_marginBottom="60dp"
+            android:layout_marginTop="30dp"></View>
+
+    </TableRow>
+
+    <TableRow>
+
+        <TextView
+            android:id="@+id/labelId"
+            android:text="@string/label_id"
+            android:theme="@style/Label_Authentification"/>
+
+    </TableRow>
+
+    <TableRow>
+
+        <EditText
+            android:id="@+id/inputId"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="text"
+            android:textColor="@color/white"
+            android:textSize="16sp"/>
+
+    </TableRow>
+
+    <TableRow>
+
+        <TextView
+            android:id="@+id/labelMdp"
+            android:text="@string/label_mdp"
+            android:theme="@style/Label_Authentification"/>
+
+    </TableRow>
+
+    <TableRow>
+
+        <EditText
+            android:id="@+id/inputMdp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textPassword"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
+
+    </TableRow>
+
+    <TableRow>
 
         <Button
-            android:layout_height="match_parent"
-            android:background="@color/transparent"
-            android:text="Mes favoris" />
+            android:id="@+id/btnSeConnecter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/green_btn"
+            android:textColor="@color/black"
+            android:text="@string/label_btn_se_connecter"
+            android:layout_marginTop="30dp" />
+
+    </TableRow>
+
+    <TableRow
+        android:layout_weight="1">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="" />
     </TableRow>
 
     <TableRow>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:textSize="35sp"
-            android:text="@string/listeFestivalTitreActivite"
-            android:layout_gravity="center"
-            android:layout_span="2"/>
+
+        <Button
+            android:id="@+id/btnMdpOublie"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/red_btn"
+            android:textColor="@color/black"
+            android:text="@string/label_btn_mdp_oublie" />
+
     </TableRow>
 
     <TableRow>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="4dp"
-            android:layout_margin="10dp"
-            android:background="@color/white"
-            android:layout_span="2"/>
+
+        <Button
+            android:id="@+id/btnIdOublie"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/red_btn"
+            android:textColor="@color/black"
+            android:text="@string/label_btn_id_oublie" />
+
     </TableRow>
-
-
-    <ListView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_span="2"/>
 
 </TableLayout>

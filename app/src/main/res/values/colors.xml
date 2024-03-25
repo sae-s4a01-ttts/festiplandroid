@@ -7,4 +7,8 @@
     <color name="stargrey">#D9D9D9</color>
     <color name="staryellow">#ECDA3C</color>
     <color name="transparent">#00FFFFFF</color>
+
+    <color name="background">#FF2A2A2A</color>
+    <color name="green_btn">#FF15BF1C</color>
+    <color name="red_btn">#FFF40000</color>
 </resources>
