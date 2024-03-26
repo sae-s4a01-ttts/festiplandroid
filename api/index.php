@@ -49,6 +49,10 @@ if(!empty($_GET['req'])) {
                     sendJSON($res, 400);
                 }
             break;
+            
+        case 'listefestivals':
+            getListeFestival();
+            break;
         
         default:
             $res["statut"] = "KO";
@@ -155,6 +159,32 @@ function infosFestival($festivalId) {
     
     sendJSON($res, $code);
 } 
+
+/**
+ * Appel la base de données et récupère tous les festivals avec leurs informations
+ */
+function getListeFestival() {
+    try {
+        $pdo = getPDO();
+
+        $requete = "SELECT nomFestival, descriptionFestival, idImage, dateDebutFestival, dateFinFestival, ville, 
+        codePostal, nomCategorie 
+        FROM festivals 
+        INNER JOIN categorieFestival ON categorieFestival.idFestival = festivals.idFestival
+        INNER JOIN categories ON categories.idCategorie = categorieFestival.idCategorie;";
+
+        $stmt = $pdo->prepare($requete);
+        $stmt->execute();
+
+        $reponse = $stmt->fetchALL();
+
+        sendJSON($reponse,200);
+    } catch (PDOException $e) {
+        $reponse["statut"] = "KO";
+        $reponse["message"] = $e->getMessage();
+        sendJSON($reponse, 500);
+    }
+}
 
 function sendJSON($res, $code) {
     header("Access-Control-Allow-Origin: *");
