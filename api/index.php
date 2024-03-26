@@ -70,7 +70,8 @@ function authentification($authLog, $authPwd) {
 
         $user = $stmt->fetch();
 
-        if (!$user || !password_verify($authPwd, $user["passwordUser"]) {
+        // if (!$user || !password_verify($authPwd, $user["passwordUser"])) {
+        if (!$user || $authPwd != $user["passwordUser"]) {
             $res['statut'] = "KO";
             $res['message'] = "Identifiant ou mot de passe incorrect ";
             $code = 404;
