@@ -3,7 +3,7 @@ function getPDO() {
     $host='localhost';	// Serveur de BD
     $db='festiplan';    // Nom de la BD
     $user='root';		// User 
-    $pass='ROOT';		// Mot de passe
+    $pass='root';		// Mot de passe
     $charset='utf8mb4';	// charset utilisé
 
     // Réglage des options

@@ -1,0 +1,17 @@
+# Ignorer les fichiers/fichiers générés par Composer
+
+/vendor/
+/composer.phar
+/composer.lock
+
+# Ignorer les fichiers d'autoload générés par Composer
+/vendor/autoload.php
+
+# Ignorer le répertoire de cache de Composer
+/vendor/composer/
+
+# Ignorer les fichiers de journalisation de Composer
+composer.log
+
+# Ignorer les binaires de Composer
+/.phpunit.result.cache
