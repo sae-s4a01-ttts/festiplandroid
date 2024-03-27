@@ -1,5 +1,22 @@
 {
+    "config":{
+        "plateform":{
+            "php":"8.3"
+        }
+    },
+    "name": "samuel.lacam/festiplandroid",
+    "autoload": {
+        "psr-4": {
+            "SamuelLacam\\Festiplandroid\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "samuel.lacam",
+            "email": "samuel.lacam@iut-rodez.fr"
+        }
+    ],
     "require-dev": {
-        "phpunit/phpunit": "^9.6"
+        "phpunit/phpunit": "^11.0"
     }
 }
