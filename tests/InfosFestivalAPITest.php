@@ -39,7 +39,7 @@ class InfosFestivalAPITest extends TestCase {
         $idFestival = 1;
 
         // When on appelle l'api d'information d'un festival avec l'id
-        $response = $this->callInfosFestival($idFestival);
+        $response = $this->callInfosFestival(1);
 
         // Then l'api doit nous renvoyer les données suivantes
         if ($response == null || $response['statut'] == "KO") {
@@ -79,46 +79,66 @@ class InfosFestivalAPITest extends TestCase {
     //     }
     // }
 
-    // Méthode pour appeler la fonction d'authentification de l'API
     protected function callInfosFestival($idFestival) {
-        $apiUrl = 'http://localhost/api/infosfestival'; // URL de l'API à appeler
+        $apiUrl = 'http://localhost/sae-api/api/festiplandroid/api/infosfestival/' . $idFestival; // URL de l'API à appeler
+        $http_status = 200;
 
-        // Données à envoyer en tant que POST
-        // $postData = http_build_query([
-        //     'idFestival' => $idFestival
-        // ]);
-
-        $curl = curl_init(); // Initialisation de cURL
-
-        // Configuration des options de cURL
-        curl_setopt_array($curl, array(
-            CURLOPT_URL => $apiUrl, // URL de l'API
-            CURLOPT_RETURNTRANSFER => true, // Retourner la réponse dans une chaîne
-            CURLOPT_POST => true, // Méthode de requête POST
-            CURLOPT_POSTFIELDS => $idFestival, // Données POST
-            CURLOPT_HTTPHEADER => array('Content-Type: application/x-www-form-urlencoded'), // En-têtes de la requête
-            
-            // Configuration du proxy
-            // CURLOPT_HTTPPROXYTUNNEL => true,
-            // CURLOPT_PROXY => 'http://cache.iut-rodez.fr:8080'
-        ));
-
-        $response = curl_exec($curl); // Exécution de la requête
-
-        // Vérification des erreurs de cURL
-        if ($response === false) {
-            $error = curl_error($curl);
-            // Gérer l'erreur de cURL ici
-            // Par exemple, vous pouvez retourner une erreur ou enregistrer dans un fichier de journal
-            return null;
-        }
-
-        curl_close($curl); // Fermeture de la session cURL
-
-        // Décode la réponse JSON en tableau associatif
-        $responseData = json_decode($response, true);
-
-        return $responseData;
+        // Appel de la fonction d'API
+        $retour = $this->appelAPI($apiUrl, "", $http_status);
+        print($http_status);
+        return $retour;
     }
+
+    // Méthode pour appeler la fonction d'information d'un festival de l'API
+    function appelAPI($apiUrl, $apiKey, &$http_status, $typeRequete="GET", $donnees=null) {
+		// Interrogation de l'API
+		// $apiUrl Url d'appel de l'API
+		// $http_status Retourne le statut HTTP de la requete
+		// $typeRequete = GET / POST / DELETE / PUT, GET par défaut si non précisé
+		// $donnees = données envoyées au format JSON en PUT ET POST, rien si GET ou DELETE
+		// La fonction retourne le résultat en format JSON
+		
+		$curl = curl_init();									// Initialisation
+
+		curl_setopt($curl, CURLOPT_URL, $apiUrl);				// Url de l'API à appeler
+		curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);			// Retour dans une chaine au lieu de l'afficher
+		curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false); 		// Désactive test certificat
+		curl_setopt($curl, CURLOPT_FAILONERROR, true);
+		
+		// Parametre pour le type de requete
+		curl_setopt($curl, CURLOPT_CUSTOMREQUEST, $typeRequete); 
+		
+		// Si des données doivent être envoyées
+		if (!empty($donnees)) {
+			curl_setopt($curl, CURLOPT_POSTFIELDS, $donnees);
+			curl_setopt($curl, CURLOPT_POST, true);
+		}
+		
+		$httpheader []= "Content-Type:application/json";
+		
+		if (!empty($apiKey)) {
+			// Ajout de la clé API dans l'entete si elle existe (pour tous les appels sauf login)
+			$httpheader = ['APIKEYDEMONAPPLI: '.$apiKey];
+		}
+		curl_setopt($curl, CURLOPT_HTTPHEADER, $httpheader);
+		
+		// A utiliser sur le réseau des PC IUT, pas en WIFI, pas sur une autre connexion
+		$proxy="http://cache.iut-rodez.fr:8080";
+		curl_setopt($curl, CURLOPT_HTTPPROXYTUNNEL, true);
+		curl_setopt($curl, CURLOPT_PROXY,$proxy ) ;
+		///////////////////////////////////////////////////////////////////////////////
+		
+		$result = curl_exec($curl);								// Exécution
+		$http_status = curl_getinfo($curl, CURLINFO_HTTP_CODE);	// Récupération statut 
+		
+		curl_close($curl);										// Cloture curl
+
+		if ($http_status=="200" or $http_status=="201" ) {		// OK, l'appel s'est bien passé
+			return json_decode($result,true); 					// Retourne la collection 
+		} else {
+			$result=[]; 										// retourne une collection Vide
+			return $result;
+		}
+	}
 
 }
