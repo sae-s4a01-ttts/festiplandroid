@@ -141,8 +141,10 @@
     <ListView
         android:id="@+id/listeSpectacles"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:clickable="false"
+        android:nestedScrollingEnabled="true"
+        android:scrollbars="none"
         android:drawSelectorOnTop="true">
 
     </ListView>
@@ -184,6 +186,7 @@
         android:id="@+id/listeScenes"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:scrollbars="none"
         android:clickable="false">
 
     </ListView>
@@ -210,7 +213,7 @@
     <TextView
         android:id="@+id/responsable"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:text="Nom Prénom email"
         android:textSize="@dimen/textSize"
         android:textColor="@color/white"/>
@@ -229,7 +232,8 @@
     <ListView
         android:id="@+id/listeOrganisateurs"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none"
         android:clickable="false">
 
     </ListView>

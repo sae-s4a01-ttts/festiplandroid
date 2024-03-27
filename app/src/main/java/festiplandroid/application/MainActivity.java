@@ -6,8 +6,12 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -18,12 +22,20 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        lanceurFille = registerForActivityResult(
-                new ActivityResultContracts.StartActivityForResult(),
-                this::methodeAExecuter);
+        ConnectivityManager gestionnaireConnexion =
+                (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo informationReseau = gestionnaireConnexion.getActiveNetworkInfo();
 
-        Intent intent = new Intent(MainActivity.this, DetailsFestival.class);
-        lanceurFille.launch(intent);
+        if (informationReseau == null || ! informationReseau.isConnected()) {
+            Toast.makeText(this, "non connecté à internet", Toast.LENGTH_LONG).show();
+        } else {
+            lanceurFille = registerForActivityResult(
+                    new ActivityResultContracts.StartActivityForResult(),
+                    this::methodeAExecuter);
+
+            Intent intent = new Intent(MainActivity.this, DetailsFestival.class);
+            lanceurFille.launch(intent);
+        }
     }
 
     private void methodeAExecuter(ActivityResult resultat) {
