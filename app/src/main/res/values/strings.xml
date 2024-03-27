@@ -20,4 +20,6 @@
     <string name="label_btn_id_oublie">Identifiant oublié ?</string>
     
     <string name="err_id_mdp_incorrect">Identifiant ou mot de passe incorrect</string>
+
+    <string name="message_toast_pas_non_trouvee">Page non accessible</string>
 </resources>
