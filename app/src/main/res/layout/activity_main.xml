@@ -72,7 +72,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:inputType="textPassword"
+            android:inputType="text"
             android:textColor="@color/white"
             android:textSize="16sp" />
 
@@ -87,7 +87,8 @@
             android:backgroundTint="@color/green_btn"
             android:textColor="@color/black"
             android:text="@string/label_btn_se_connecter"
-            android:layout_marginTop="30dp" />
+            android:layout_marginTop="30dp"
+            android:onClick="clicSeConnecter" />
 
     </TableRow>
 
@@ -107,7 +108,8 @@
             android:layout_height="wrap_content"
             android:backgroundTint="@color/red_btn"
             android:textColor="@color/black"
-            android:text="@string/label_btn_mdp_oublie" />
+            android:text="@string/label_btn_mdp_oublie"
+            android:onClick="clicMdpOublie" />
 
     </TableRow>
 
@@ -119,7 +121,8 @@
             android:layout_height="wrap_content"
             android:backgroundTint="@color/red_btn"
             android:textColor="@color/black"
-            android:text="@string/label_btn_id_oublie" />
+            android:text="@string/label_btn_id_oublie"
+            android:onClick="clicIdOublie" />
 
     </TableRow>
 
