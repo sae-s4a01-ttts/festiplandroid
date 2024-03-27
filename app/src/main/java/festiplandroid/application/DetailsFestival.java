@@ -116,7 +116,7 @@ public class DetailsFestival extends AppCompatActivity {
         // le titre saisi par l'utilisateur est récupéré et encodé en UTF-8
 
         // le titre du film est insésré dans l'URL de recherche du film
-        String url = "http://localhost/sae-api/api/festiplandroid/api/infosfestival/1";
+        String url = "http://10.0.2.2/sae-api/api/festiplandroid/api/infosfestival/1";
         /*
          * on crée une requête GET, paramètrée par l'url préparée ci-dessus,
          * Le résultat de cette requête sera une chaîne de caractères, donc la requête
@@ -135,7 +135,8 @@ public class DetailsFestival extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError erreur) {
-                        test.setText("aucun résultat");
+//                        System.out.println("erreur : " + erreur.getMessage());
+                        test.setText("aucun résultat : " + erreur.getMessage());
                     }
                 });
         // la requête est placée dans la file d'attente des requêtes
