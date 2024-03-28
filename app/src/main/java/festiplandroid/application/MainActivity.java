@@ -79,34 +79,24 @@ public class MainActivity extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
-        // Création de la requête StringRequest en méthode POST
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, API_URL,
+        StringRequest requeteVolley = new StringRequest(Request.Method.GET, API_URL,
+                // écouteur de la réponse renvoyée par la requête
                 new Response.Listener<String>() {
                     @Override
-                    public void onResponse(String response) {
-                        Toast.makeText(context, response, Toast.LENGTH_LONG).show();
+                    public void onResponse(String reponse) {
+                        Toast.makeText(context, reponse, Toast.LENGTH_LONG).show();
                     }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.e(TAG, "Erreur de connexion: " + error.toString());
-                Toast.makeText(context, "Erreur de connexion", Toast.LENGTH_LONG).show();
-            }
-        }) {
-            @Override
-            public byte[] getBody() throws AuthFailureError {
-                return postData.toString().getBytes();
-            }
-
-            @Override
-            public String getBodyContentType() {
-                return "application/json";
-            }
-        };
-
-        // Ajout de la requête à la file d'attente
-        getFileRequete().add(stringRequest);
+                },
+                // écouteur du retour de la requête si aucun résultat n'est renvoyé
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError erreur) {
+                        Log.e(TAG, "Erreur de connexion: " + erreur.toString());
+                        Toast.makeText(context, "Erreur de connexion", Toast.LENGTH_LONG).show();
+                    }
+                });
+        // la requête est placée dans la file d'attente des requêtes
+        getFileRequete().add(requeteVolley);
     }
 
     /**
