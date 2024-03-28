@@ -32,11 +32,11 @@
 
             <TextView
                 android:id="@+id/categorie"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Musique Dance"
-                android:textSize="@dimen/textSize"
-                android:textColor="@color/white"/>
+                android:textColor="@color/white"
+                android:textSize="@dimen/textSize" />
 
             <TextView
                 android:id="@+id/labelDate"
@@ -138,16 +138,31 @@
         android:textStyle="bold" />
 
 
-    <ListView
-        android:id="@+id/listeSpectacles"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:clickable="false"
-        android:nestedScrollingEnabled="true"
-        android:scrollbars="none"
-        android:drawSelectorOnTop="true">
+    <LinearLayout
+        android:orientation="horizontal">
+        <TextView
+            android:id="@+id/spectacles"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="25"
+            android:text="- spectacle 1
+                          \n- spectacle 2"
+            android:textColor="@color/white"
+            android:textSize="@dimen/textSize"
+            android:textStyle="bold" />
 
-    </ListView>
+        <TextView
+            android:id="@+id/dureeSpectacles"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="75"
+            android:text="2h30
+                          \n1h15"
+            android:textColor="@color/white"
+            android:textSize="@dimen/textSize"
+            android:textStyle="bold" />
+
+    </LinearLayout>
 
 
 <!-- Exemple d'un spectacle à ajouter dans la ListView -->

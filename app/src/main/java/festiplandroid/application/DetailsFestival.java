@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.ListView.FixedViewInfo;
+import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,8 +17,15 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -32,7 +40,7 @@ public class DetailsFestival extends AppCompatActivity {
 
     private ArrayAdapter<String> adapterOrganisateurs;
 
-    private ListView listSpectacles;
+//    private ListView listSpectacles;
 
     private ListView listScenes;
 
@@ -40,17 +48,14 @@ public class DetailsFestival extends AppCompatActivity {
 
     private RequestQueue fileRequete;
 
-    private TextView test;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detailsfestival);
 
-        test = findViewById(R.id.ville);
         appelleAPI();
 
-        listSpectacles = findViewById(R.id.listeSpectacles);
+//        listSpectacles = findViewById(R.id.listeSpectacles);
         listScenes = findViewById(R.id.listeScenes);
         listOrganisateurs = findViewById(R.id.listeOrganisateurs);
 
@@ -68,11 +73,11 @@ public class DetailsFestival extends AppCompatActivity {
         adapterScenes = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, scenesTest);
         adapterOrganisateurs = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, organisateursTest);
 
-        listSpectacles.setAdapter(adapterSpectacles);
+//        listSpectacles.setAdapter(adapterSpectacles);
         listScenes.setAdapter((adapterScenes));
         listOrganisateurs.setAdapter(adapterOrganisateurs);
 
-        listSpectacles.setScrollContainer(false);
+//        listSpectacles.setScrollContainer(false);
         listScenes.setScrollContainer(false);
         listOrganisateurs.setScrollContainer(false);
 
@@ -112,7 +117,7 @@ public class DetailsFestival extends AppCompatActivity {
      * Le résultat de la requête est affiché en sous la forme d'une chaîne de caractères.
      * A défaut, c'est un message d'erreur qui est affiché
      */
-    public void appelleAPI() {
+    private void appelleAPI() {
         // le titre saisi par l'utilisateur est récupéré et encodé en UTF-8
 
         // le titre du film est insésré dans l'URL de recherche du film
@@ -122,25 +127,121 @@ public class DetailsFestival extends AppCompatActivity {
          * Le résultat de cette requête sera une chaîne de caractères, donc la requête
          * est de type StringRequest
          */
-        StringRequest requeteVolley = new StringRequest(Request.Method.GET, url,
+        JsonArrayRequest requeteVolley = new JsonArrayRequest(Request.Method.GET, url, null,
                 // écouteur de la réponse renvoyée par la requête
-                new Response.Listener<String>() {
+                new Response.Listener<JSONArray>() {
                     @Override
-                    public void onResponse(String reponse) {
-                        test.setText("Début de la réponse obtenue"
-                                + reponse.substring(0, Math.min(400, reponse.length())));
+                    public void onResponse(JSONArray reponse) {
+                        affichageInfos(reponse);
                     }
                 },
                 // écouteur du retour de la requête si aucun résultat n'est renvoyé
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError erreur) {
-//                        System.out.println("erreur : " + erreur.getMessage());
-                        test.setText("aucun résultat : " + erreur.getMessage());
+                        Toast.makeText(DetailsFestival.this, R.string.erreurAPI, Toast.LENGTH_LONG).show();
                     }
                 });
         // la requête est placée dans la file d'attente des requêtes
         getFileRequete().add(requeteVolley);
     }
 
+    /**
+     * Affecte les informations du festival aux TextView
+     *
+     * @param donnees donnees transmise par l'API
+     */
+    private void affichageInfos(JSONArray donnees) {
+        try {
+            JSONObject tableFestival = donnees.getJSONObject(0);
+            JSONArray tableCategories = (JSONArray) donnees.get(1);
+            JSONArray tableSpectacles = (JSONArray) donnees.get(2);
+//            JSONArray tableOrganisateurs = (JSONArray) donnees.get(3);
+
+            affichageTableFestival(tableFestival);
+            affichageTableCategories(tableCategories);
+            affichageTableSpectacles(tableSpectacles);
+//            affichageTableOrganisateurs(tableOrganisateurs);
+        } catch (JSONException e) {
+            Toast.makeText(DetailsFestival.this, R.string.erreurJSON, Toast.LENGTH_LONG).show();
+        }
+    }
+
+    /**
+     * Affecte les informations de la table festival aux TextView
+     *
+     * @param tableFestival donnees de la table festival
+     */
+    private void affichageTableFestival(JSONObject tableFestival) {
+        TextView nomFestival = findViewById(R.id.titreFestival);
+        TextView description = findViewById(R.id.description);
+        TextView dates = findViewById(R.id.date);
+        TextView ville = findViewById(R.id.ville);
+        TextView codePostal = findViewById(R.id.codePostal);
+
+        try {
+            nomFestival.setText(tableFestival.getString("nomFestival"));
+            description.setText(tableFestival.getString("descriptionFestival"));
+            dates.setText(String.format("Du %s\nau %s",
+                          tableFestival.get("dateDebutFestival"),
+                          tableFestival.get("dateFinFestival")));
+            ville.setText(tableFestival.getString("ville"));
+            codePostal.setText((tableFestival.getString("codePostal")));
+
+        } catch (JSONException e) {
+            Toast.makeText(DetailsFestival.this, R.string.erreurJSON, Toast.LENGTH_LONG).show();
+        }
+    }
+
+    /**
+     * Affecte les informations de la table categories aux TextView
+     *
+     * @param tableCategories donnees de la table categorie
+     */
+    private void affichageTableCategories(JSONArray tableCategories) {
+        TextView categories = findViewById(R.id.categorie);
+
+        StringBuilder categoriesString = new StringBuilder();
+        try {
+            for (int i = 0; i < tableCategories.length(); i++) {
+                JSONObject categorie = tableCategories.getJSONObject(i);
+                categoriesString.append(categorie.getString("nomCategorie") + " ");
+            }
+            categories.setText(categoriesString);
+        } catch (JSONException e) {
+            Toast.makeText(DetailsFestival.this, R.string.erreurJSON, Toast.LENGTH_LONG).show();
+        }
+    }
+
+    /**
+     * Affecte les informations de la table spectacles aux TextView
+     *
+     * @param tableSpectacles donnees de la table spectacles
+     */
+    private void affichageTableSpectacles(JSONArray tableSpectacles) {
+        TextView spectacles = findViewById(R.id.spectacles);
+        TextView durees = findViewById(R.id.dureeSpectacles);
+
+        StringBuilder spectaclesString = new StringBuilder();
+        StringBuilder dureesString = new StringBuilder();
+        try {
+            for (int i = 0; i < tableSpectacles.length(); i++) {
+                JSONObject spectacle = tableSpectacles.getJSONObject(i);
+                spectaclesString.append(spectacle.getString("titreSpectacle") + "\n");
+                dureesString.append(spectacle.getString("dureeSpectacle") + "\n");
+            }
+            spectacles.setText(spectaclesString);
+            durees.setText(dureesString);
+        } catch (JSONException e) {
+            Toast.makeText(DetailsFestival.this, R.string.erreurJSON, Toast.LENGTH_LONG).show();
+        }
+    }
+    /**
+     * Affecte les informations de la table organisateurs aux TextView
+     *
+     * @param tableOrganisateurs donnees de la table organisateurs
+     */
+    private void affichageTableOrganisateurs(JSONArray tableOrganisateurs) {
+
+    }
 }

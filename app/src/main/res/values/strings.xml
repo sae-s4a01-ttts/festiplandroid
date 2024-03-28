@@ -28,4 +28,7 @@
     <string name="festivalLibelleListeScenes">Scenes :</string>
     <string name="festivalLibelleResponsable">Responsable :</string>
     <string name="festivalLibelleOrganisateurs">Organisateurs :</string>
+
+    <string name="erreurAPI">"connexion API impossible"</string>
+    <string name="erreurJSON">"problème traitement données"</string>
 </resources>
