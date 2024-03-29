@@ -72,9 +72,19 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:inputType="text"
+            android:inputType="textPassword"
             android:textColor="@color/white"
             android:textSize="16sp" />
+
+    </TableRow>
+
+    <TableRow>
+
+        <TextView
+            android:id="@+id/messageErreurAuth"
+            android:textAlignment="center"
+            android:textColor="@color/red_btn"
+            android:textStyle="bold" />
 
     </TableRow>
 

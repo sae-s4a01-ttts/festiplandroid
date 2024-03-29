@@ -2,8 +2,10 @@ package festiplandroid.application;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,6 +20,11 @@ public class ConsultationFestivalActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.consultation_festival);
+
+        Intent intention = getIntent();
+        String idUserAuth = intention.getStringExtra(MainActivity.CLE_ID);
+
+        Toast.makeText(this, idUserAuth, Toast.LENGTH_LONG).show();
 
         listeFestivals = findViewById(R.id.listeFestival);
 
