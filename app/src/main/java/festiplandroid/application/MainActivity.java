@@ -23,17 +23,11 @@ import org.json.JSONObject;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static final String TAG = "MainActivity";
-    // private static final String API_URL = "https://salon-eureka.fr/authentification";
-    // private static final String API_URL = "http://10.0.2.2/SAE/festiplandroid/api/listefestivals";
-    private static final String API_URL = "https://cat-fact.herokuapp.com/facts";
-
     private EditText identifiant;
     private EditText motDePasse;
     private Context context;
     private RequestQueue fileRequete;
     private TextView messageErreur;
-
     public static final String CLE_ID = "id de l'utilisateur";
 
     @Override

@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/marginLayoutPrincipal"
+    android:padding="@dimen/paddingLayoutPrincipal"
+    android:background="@drawable/mainlayout"
+    android:stretchColumns="0">
+
+    <TableRow>
+        <LinearLayout
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/titreFestival"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Nom Festival"
+                android:textColor="@color/white"
+                android:textSize="@dimen/titre"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/labelCategorie"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/listeFestivalLabelCategorie"
+                android:textColor="@color/white"
+                android:textSize="@dimen/textSize"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/categorie"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Musique Dance"
+                android:textColor="@color/white"
+                android:textSize="@dimen/textSize" />
+
+            <TextView
+                android:id="@+id/labelDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/listeFestivalLabelDate"
+                android:textColor="@color/white"
+                android:textSize="@dimen/textSize"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Du 02/02/2024\nau 02/03/2024"
+                android:textSize="@dimen/textSize"
+                android:textColor="@color/white" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_column="2"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="170dp"
+                android:layout_height="170dp"
+                android:background="@drawable/frame"
+                tools:srcCompat="@tools:sample/avatars" />
+        </LinearLayout>
+    </TableRow>
+    <LinearLayout
+        android:orientation="horizontal">
+        <TextView
+            android:id="@+id/labelleVille"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:text="@string/listeFestivalLabelVille"
+            android:textColor="@color/white"
+            android:textSize="@dimen/textSize"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/ville"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="60dp"
+            android:text="Albi"
+            android:textSize="@dimen/textSize"
+            android:textColor="@color/white" />
+
+        <TextView
+            android:id="@+id/labelCodePostal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:text="@string/listeFestivalLabelCodeP"
+            android:textColor="@color/white"
+            android:textSize="@dimen/textSize"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/codePostal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="81000"
+            android:textSize="@dimen/textSize"
+            android:textColor="@color/white" />
+    </LinearLayout>
+
+
+
+
+
+    <TextView
+        android:id="@+id/labelDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/listeFestivalLabelDescription"
+        android:textColor="@color/white"
+        android:textSize="@dimen/textSize"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Festival de musique à Albi"
+        android:textSize="@dimen/textSize"
+        android:textColor="@color/white" />
+
+    <TextView
+        android:id="@+id/labelListeSpectacles"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/festivalLibelleListeSpectacles"
+        android:textColor="@color/white"
+        android:textSize="@dimen/textSize"
+        android:textStyle="bold" />
+
+
+    <LinearLayout
+        android:orientation="horizontal">
+        <TextView
+            android:id="@+id/spectacles"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="25"
+            android:text="- spectacle 1
+                          \n- spectacle 2"
+            android:textColor="@color/white"
+            android:textSize="@dimen/textSize"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/dureeSpectacles"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="75"
+            android:text="2h30
+                          \n1h15"
+            android:textColor="@color/white"
+            android:textSize="@dimen/textSize"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+
+<!-- Exemple d'un spectacle à ajouter dans la ListView -->
+<!--        <TableRow>-->
+<!--            <TextView-->
+<!--                android:id="@+id/spectacle1"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="- Spectacle 1"-->
+<!--                android:textColor="@color/white"-->
+<!--                android:textStyle="bold"-->
+<!--                tools:layout_editor_absoluteX="13dp"-->
+<!--                tools:layout_editor_absoluteY="190dp" />-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/heureSpectacle1"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="2h30min"-->
+<!--                android:textColor="@color/white"-->
+<!--                android:textStyle="bold"-->
+<!--                tools:layout_editor_absoluteX="13dp"-->
+<!--                tools:layout_editor_absoluteY="190dp" />-->
+<!--        </TableRow>-->
+
+    <TextView
+        android:id="@+id/labelListeScenes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/festivalLibelleListeScenes"
+        android:textColor="@color/white"
+        android:textSize="@dimen/textSize"
+        android:textStyle="bold" />
+
+    <ListView
+        android:id="@+id/listeScenes"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none"
+        android:clickable="false">
+
+    </ListView>
+<!-- Exemple d'une scène à ajouter dans la ListView   -->
+<!--    <TextView-->
+<!--        android:id="@+id/heureSpectacle1"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="- Petite scènes"-->
+<!--        android:textColor="@color/white"-->
+<!--        android:textStyle="bold"-->
+<!--        tools:layout_editor_absoluteX="13dp"-->
+<!--        tools:layout_editor_absoluteY="190dp" />-->
+
+    <TextView
+        android:id="@+id/labelResponsable"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/festivalLibelleResponsable"
+        android:textColor="@color/white"
+        android:textSize="@dimen/textSize"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/responsable"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:text="Nom Prénom email"
+        android:textSize="@dimen/textSize"
+        android:textColor="@color/white"/>
+
+
+
+    <TextView
+        android:id="@+id/labelOrganisateurs"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/festivalLibelleOrganisateurs"
+        android:textColor="@color/white"
+        android:textSize="@dimen/textSize"
+        android:textStyle="bold" />
+
+    <ListView
+        android:id="@+id/listeOrganisateurs"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none"
+        android:clickable="false">
+
+    </ListView>
+
+<!-- Exemple d'un organisateur à ajouter dans la ListView   -->
+<!--    <TextView-->
+<!--        android:id="@+id/organisateur1"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="- Nom Prénom email"-->
+<!--        android:textColor="@color/white"-->
+<!--        tools:layout_editor_absoluteX="13dp"-->
+<!--        tools:layout_editor_absoluteY="190dp" />-->
+
+    <TableRow>
+        <ImageButton
+            android:layout_column="2"
+            android:layout_gravity="right"
+            android:id="@+id/imageButton"
+            android:background="@color/transparent"
+            app:srcCompat="@android:drawable/btn_star_big_off"
+            />
+
+    </TableRow>
+
+</TableLayout>

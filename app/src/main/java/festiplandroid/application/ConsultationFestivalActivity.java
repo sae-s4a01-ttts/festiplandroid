@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -45,5 +46,14 @@ public class ConsultationFestivalActivity extends AppCompatActivity {
         /* Laison données avec classe customListView */
         CustomListView customListView = new CustomListView(festivals,this);
         listeFestivals.setAdapter(customListView);
+
+        listeFestivals.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, android.view.View view, int position, long id) {
+                // position contient l'indice de l'élément cliqué dans la ListView
+                // Vous pouvez faire ce que vous voulez avec cet élément, par exemple afficher un Toast
+                Toast.makeText(ConsultationFestivalActivity.this, "position : " + position, Toast.LENGTH_LONG).show();
+            }
+        });
     }
 }

@@ -22,4 +22,13 @@
     <string name="err_id_mdp_incorrect">Identifiant ou mot de passe incorrect</string>
 
     <string name="message_toast_pas_non_trouvee">Page non accessible</string>
+
+    <string name="detailsFestivalTitreActivite">Information du festival</string>
+    <string name="festivalLibelleListeSpectacles">Liste des spectacles :</string>
+    <string name="festivalLibelleListeScenes">Scenes :</string>
+    <string name="festivalLibelleResponsable">Responsable :</string>
+    <string name="festivalLibelleOrganisateurs">Organisateurs :</string>
+
+    <string name="erreurAPI">"connexion API impossible"</string>
+    <string name="erreurJSON">"problème traitement données"</string>
 </resources>
