@@ -31,8 +31,11 @@ if(!empty($_GET['req'])) {
 
     switch ($url[0]) {
         case 'authentification':
-            if(isset($_POST['authLog']) && isset($_POST['authPwd'])) {
-                authentification($_POST['authLog'], $_POST['authPwd']);
+            $putData = file_get_contents("php://input");
+            $donneesPUT = json_decode($putData, true);
+
+            if(isset($donneesPUT['authLog']) && isset($donneesPUT['authPwd'])) {
+                authentification($donneesPUT['authLog'], $donneesPUT['authPwd']);
             } else {
                 $res['statut'] = "KO";
                 $res['message'] = "Données d'utilisateur invalides";
@@ -85,7 +88,7 @@ function authentification($authLog, $authPwd) {
 
         if (!$user || !password_verify($authPwd, $user["passwordUser"])) {
             $res['statut'] = "KO";
-            $res['message'] = "Identifiant ou mot de passe incorrect ";
+            $res['message'] = "Identifiant ou mot de passe incorrect " . $authLog . ' 0 ' . $authPwd . $user["passwordUser"];
             $code = 404;
         } else {
             $res['statut'] = "OK";
@@ -198,3 +201,6 @@ function sendJSON($res, $code) {
     http_response_code($code);
     echo json_encode($res, JSON_UNESCAPED_UNICODE);
 }
+
+// $stmt = getPDO()->prepare("INSERT INTO users (nomUser, prenomUser, emailUser, loginUser, passwordUser) VALUES (?, ?, ?, ?, ?)");
+// $stmt->execute(["Tom", "Jammes", "tom.jammes@iut-rodez.fr", "tom", password_hash("jammes", PASSWORD_DEFAULT)]);
