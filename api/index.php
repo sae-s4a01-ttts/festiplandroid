@@ -185,7 +185,7 @@ function getListeFestival() {
         $pdo = getPDO();
 
         $requete = "SELECT f.idFestival, f.nomFestival, f.descriptionFestival, f.dateDebutFestival, f.dateFinFestival,
-                           f.ville, f.codePostal, JSON_ARRAYAGG(c.nomCategorie) AS nomCategorie
+                           f.ville, f.codePostal, GROUP_CONCAT(c.nomCategorie SEPARATOR ' ') AS nomCategorie
                     FROM  festivals f
                     INNER JOIN categorieFestival cf ON f.idFestival = cf.idFestival
                     INNER JOIN categories c ON cf.idCategorie = c.idCategorie
@@ -195,9 +195,13 @@ function getListeFestival() {
         $stmt = $pdo->prepare($requete);
         $stmt->execute();
 
-        $reponse = $stmt->fetchALL();
+        $festivals = $stmt->fetchALL();
 
-        sendJSON($reponse,200);
+        // foreach ($festivals as &$festival) {
+        //     $festival['nomCategorie'] = json_decode($festival['nomCategorie']);
+        // }
+        
+        sendJSON($festivals ,200);
     } catch (PDOException $e) {
         $reponse["statut"] = "KO";
         $reponse["message"] = $e->getMessage();
