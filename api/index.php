@@ -184,35 +184,20 @@ function getListeFestival() {
     try {
         $pdo = getPDO();
 
-        $requeteIDFestival = "SELECT idFestival FROM festivals;";
+        $requete = "SELECT f.idFestival, f.nomFestival, f.descriptionFestival, f.dateDebutFestival, f.dateFinFestival,
+                           f.ville, f.codePostal, JSON_ARRAYAGG(c.nomCategorie) AS nomCategorie
+                    FROM  festivals f
+                    INNER JOIN categorieFestival cf ON f.idFestival = cf.idFestival
+                    INNER JOIN categories c ON cf.idCategorie = c.idCategorie
+                    GROUP BY f.idFestival, f.nomFestival, f.descriptionFestival, f.dateDebutFestival,
+                             f.dateFinFestival, f.ville, f.codePostal;";
 
-        $requeteFestivals = "SELECT nomFestival, descriptionFestival, idImage, dateDebutFestival, dateFinFestival, ville, codePostal
-        FROM festivals;";
+        $stmt = $pdo->prepare($requete);
+        $stmt->execute();
 
-        $requeteCategorie = "SELECT nomCategorie FROM categories
-        INNER JOIN categorieFestival ON categorieFestival.idCategorie = categories.idCategorie
-        WHERE idFesitval = :id;";
+        $reponse = $stmt->fetchALL();
 
-        $stmtFestivals = $pdo->prepare($requeteFestivals);
-        $stmtID = $pdo->prepare($requeteIDFestival);
-        $stmtCategorie = $pdo->prepare($requeteCategorie);
-
-        $stmtID->execute();
-        $stmtFestivals->execute();
-
-        // La liste des id de festivals permettant de récupérer leurs catégorie plus tard
-        $listeID = $stmtID->fetchALL();
-
-        // la liste de tous les festivals avec leurs données
-        $festivals = $stmtFestivals->fetchALL();
-
-        // Récupération des différentes catégories d'un festival
-        foreach ($listeID as $id) {
-            $stmtCategorie->execute();
-            $festivals["categories"] = $stmtCategorie->fetchALL();
-        }
-
-        sendJSON($festivals,200);
+        sendJSON($reponse,200);
     } catch (PDOException $e) {
         $reponse["statut"] = "KO";
         $reponse["message"] = $e->getMessage();
