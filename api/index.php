@@ -68,10 +68,9 @@ if(!empty($_GET['req'])) {
 
 function authentification($authLog, $authPwd) {
     $code = 500;
+    $pdo = getPDO();
 
     try {
-        $pdo = getPDO();
-
         $sql = "SELECT idUser, nomUser, prenomUser, loginUser, passwordUser
                 FROM users 
                 WHERE loginUser = :authLog";
@@ -105,6 +104,7 @@ function authentification($authLog, $authPwd) {
 function infosFestival($festivalId) {
     $pdo = getPDO();
     $code = 200;
+    $res = [];
 
     try {
         // récupération des données de la table festival
@@ -121,33 +121,39 @@ function infosFestival($festivalId) {
 
         $festivalInfos = $stmt->fetch();
 
-        // récupération des catégories du festival
-        $requeteFestivalCategorie = "SELECT nomCategorie
-              FROM categories
-              JOIN categoriefestival ON categoriefestival.idCategorie = categories.idCategorie
-              WHERE categoriefestival.idFestival = :festivalId";
-        
-        $stmt2 = $pdo->prepare($requeteFestivalCategorie);
-        $stmt2->bindParam("festivalId", $festivalId);
-        $stmt2->execute();
-        $nomCat = $stmt2->fetchAll();
-
-        // récupération des spectacles du festival
-        $requeteSpectacles = "SELECT titreSpectacle, dureeSpectacle
-                              FROM spectacles
-                              JOIN composer ON composer.idSpectacle = spectacles.idSpectacle
-                              WHERE composer.idFestival = :festivalId";
-
-        $s = $pdo->prepare($requeteSpectacles);
-        $s->bindParam(":festivalId", $festivalId);
-        $s->execute();
-        $nomSpec = $s->fetchAll();
-
-        // Composition des données
-        $res = [];
-        $res[] = $festivalInfos;
-        $res[] = $nomCat;
-        $res[] = $nomSpec;
+        if ($festivalInfos == false) {
+            $code = 404;
+            $res['statut'] = "KO";
+            $res['message'] = "id du festival invalide";
+            
+        } else {
+            // récupération des catégories du festival
+            $requeteFestivalCategorie = "SELECT nomCategorie
+                  FROM categories
+                  JOIN categoriefestival ON categoriefestival.idCategorie = categories.idCategorie
+                  WHERE categoriefestival.idFestival = :festivalId";
+            
+            $stmt2 = $pdo->prepare($requeteFestivalCategorie);
+            $stmt2->bindParam("festivalId", $festivalId);
+            $stmt2->execute();
+            $nomCat = $stmt2->fetchAll();
+    
+            // récupération des spectacles du festival
+            $requeteSpectacles = "SELECT titreSpectacle, dureeSpectacle
+                                  FROM spectacles
+                                  JOIN composer ON composer.idSpectacle = spectacles.idSpectacle
+                                  WHERE composer.idFestival = :festivalId";
+    
+            $s = $pdo->prepare($requeteSpectacles);
+            $s->bindParam(":festivalId", $festivalId);
+            $s->execute();
+            $nomSpec = $s->fetchAll();
+    
+            // Composition des données
+            $res[] = $festivalInfos;
+            $res[] = $nomCat;
+            $res[] = $nomSpec;   
+        }
 
     } catch (PDOException $e) {
         $code = 500;
