@@ -177,18 +177,35 @@ function getListeFestival() {
     try {
         $pdo = getPDO();
 
-        $requete = "SELECT nomFestival, descriptionFestival, idImage, dateDebutFestival, dateFinFestival, ville, 
-        codePostal, nomCategorie 
-        FROM festivals 
-        INNER JOIN categorieFestival ON categorieFestival.idFestival = festivals.idFestival
-        INNER JOIN categories ON categories.idCategorie = categorieFestival.idCategorie;";
+        $requeteIDFestival = "SELECT idFestival FROM festivals;";
 
-        $stmt = $pdo->prepare($requete);
-        $stmt->execute();
+        $requeteFestivals = "SELECT nomFestival, descriptionFestival, idImage, dateDebutFestival, dateFinFestival, ville, codePostal
+        FROM festivals;";
 
-        $reponse = $stmt->fetchALL();
+        $requeteCategorie = "SELECT nomCategorie FROM categories
+        INNER JOIN categorieFestival ON categorieFestival.idCategorie = categories.idCategorie
+        WHERE idFesitval = :id;";
 
-        sendJSON($reponse,200);
+        $stmtFestivals = $pdo->prepare($requeteFestivals);
+        $stmtID = $pdo->prepare($requeteIDFestival);
+        $stmtCategorie = $pdo->prepare($requeteCategorie);
+
+        $stmtID->execute();
+        $stmtFestivals->execute();
+
+        // La liste des id de festivals permettant de récupérer leurs catégorie plus tard
+        $listeID = $stmtID->fetchALL();
+
+        // la liste de tous les festivals avec leurs données
+        $festivals = $stmtFestivals->fetchALL();
+
+        // Récupération des différentes catégories d'un festival
+        foreach ($listeID as $id) {
+            $stmtCategorie->execute();
+            $festivals["categories"] = $stmtCategorie->fetchALL();
+        }
+
+        sendJSON($festivals,200);
     } catch (PDOException $e) {
         $reponse["statut"] = "KO";
         $reponse["message"] = $e->getMessage();
@@ -196,34 +213,48 @@ function getListeFestival() {
     }
 }
 
-/**
- * Appel la base de données et récupère tous les festivals favoris avec leurs informations
- */
-function getListeFestivalFavoris($utilisateur) {
-    try {
-        $pdo = getPDO();
+// /**
+//  * Appel la base de données et récupère tous les festivals favoris avec leurs informations
+//  */
+// function getListeFestivalFavoris($utilisateur) {
+//     try {
+//         $pdo = getPDO();
 
-        $requete = "SELECT nomFestival, descriptionFestival, idImage, dateDebutFestival, dateFinFestival, ville, 
-        codePostal, nomCategorie 
-        FROM festivals 
-        INNER JOIN categorieFestival ON categorieFestival.idFestival = festivals.idFestival
-        INNER JOIN categories ON categories.idCategorie = categorieFestival.idCategorie
-        INNER JOIN favoris ON festivals.idFestival = favoris.idFestival
-        WHERE favoris.idUtilisateur = :idU;";
+//         $requeteIDFestival = "SELECT idFestival FROM festivals;";
 
-        $stmt = $pdo->prepare($requete);
-        $stmt->bindParam("idU", $utilisateur);
-        $stmt->execute();
+//         $requeteFestivals = "SELECT nomFestival, descriptionFestival, idImage, dateDebutFestival, dateFinFestival, ville, codePostal
+//         FROM festivals;";
 
-        $reponse = $stmt->fetchALL();
+//         $requeteCategorie = "SELECT nomCategorie FROM categories
+//         INNER JOIN categorieFestival ON categorieFestival.idCategorie = categories.idCategorie
+//         WHERE idFesitval = :id;";
 
-        sendJSON($reponse,200);
-    } catch (PDOException $e) {
-        $reponse["statut"] = "KO";
-        $reponse["message"] = $e->getMessage();
-        sendJSON($reponse, 500);
-    }
-}
+//         $stmtFestivals = $pdo->prepare($requeteFestivals);
+//         $stmtID = $pdo->prepare($requeteIDFestival);
+//         $stmtCategorie = $pdo->prepare($requeteCategorie);
+
+//         $stmtID->execute();
+//         $stmtFestivals->execute();
+
+//         // La liste des id de festivals permettant de récupérer leurs catégorie plus tard
+//         $listeID = $stmtID->fetchALL();
+
+//         // la liste de tous les festivals avec leurs données
+//         $festivals = $stmtFestivals->fetchALL();
+
+//         // Récupération des différentes catégories d'un festival
+//         foreach ($listeID as $id) {
+//             $stmtCategorie->execute();
+//             $festivals["categories"] = $stmtCategorie->fetchALL();
+//         }
+
+//         sendJSON($festivals,200);
+//     } catch (PDOException $e) {
+//         $reponse["statut"] = "KO";
+//         $reponse["message"] = $e->getMessage();
+//         sendJSON($reponse, 500);
+//     }
+// }
 
 function sendJSON($res, $code) {
     header("Access-Control-Allow-Origin: *");
