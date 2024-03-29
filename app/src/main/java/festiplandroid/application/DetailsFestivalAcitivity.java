@@ -2,6 +2,7 @@ package festiplandroid.application;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -36,6 +37,12 @@ public class DetailsFestivalAcitivity extends AppCompatActivity {
 
     private ListView listOrganisateurs;
 
+    private String nomFestivalInt;
+    private String dateFestivalInt;
+    private String descriptionFestivalInt;
+    private String villeFestivalInt;
+    private String cdpFestivalInt;
+
     private RequestQueue fileRequete;
 
     @Override
@@ -44,8 +51,14 @@ public class DetailsFestivalAcitivity extends AppCompatActivity {
         setContentView(R.layout.activity_detailsfestival);
 
         appelAPI();
+        Intent intention = getIntent();
+        nomFestivalInt = intention.getStringExtra("nom_festival");
+        dateFestivalInt = intention.getStringExtra("date_festival");
+        descriptionFestivalInt = intention.getStringExtra("description_festival");
+        villeFestivalInt = intention.getStringExtra("ville_festival");
+        cdpFestivalInt = intention.getStringExtra("cdp_festival");
 
-//        listSpectacles = findViewById(R.id.listeSpectacles);
+//      listSpectacles = findViewById(R.id.listeSpectacles);
         listScenes = findViewById(R.id.listeScenes);
         listOrganisateurs = findViewById(R.id.listeOrganisateurs);
 
@@ -63,11 +76,11 @@ public class DetailsFestivalAcitivity extends AppCompatActivity {
         adapterScenes = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, scenesTest);
         adapterOrganisateurs = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, organisateursTest);
 
-//        listSpectacles.setAdapter(adapterSpectacles);
+//      listSpectacles.setAdapter(adapterSpectacles);
         listScenes.setAdapter((adapterScenes));
         listOrganisateurs.setAdapter(adapterOrganisateurs);
 
-//        listSpectacles.setScrollContainer(false);
+//      listSpectacles.setScrollContainer(false);
         listScenes.setScrollContainer(false);
         listOrganisateurs.setScrollContainer(false);
 
@@ -170,13 +183,13 @@ public class DetailsFestivalAcitivity extends AppCompatActivity {
         TextView codePostal = findViewById(R.id.codePostal);
 
         try {
-            nomFestival.setText(tableFestival.getString("nomFestival"));
-            description.setText(tableFestival.getString("descriptionFestival"));
+            nomFestival.setText(nomFestivalInt);
+            description.setText(descriptionFestivalInt);
             dates.setText(String.format("Du %s\nau %s",
                           tableFestival.get("dateDebutFestival"),
                           tableFestival.get("dateFinFestival")));
-            ville.setText(tableFestival.getString("ville"));
-            codePostal.setText((tableFestival.getString("codePostal")));
+            ville.setText(villeFestivalInt);
+            codePostal.setText(cdpFestivalInt);
 
         } catch (JSONException e) {
             Toast.makeText(DetailsFestivalAcitivity.this, R.string.erreurJSON, Toast.LENGTH_LONG).show();

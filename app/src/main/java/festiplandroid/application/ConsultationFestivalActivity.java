@@ -189,7 +189,11 @@ public class ConsultationFestivalActivity extends AppCompatActivity {
                     Toast.makeText(mContext, festivalInfo, Toast.LENGTH_LONG).show();
 
                     Intent intent = new Intent(ConsultationFestivalActivity.this, festiplandroid.application.DetailsFestivalAcitivity.class);
-                    intent.putExtra("festivalInfo", festivalInfo);
+                    intent.putExtra("nom_festival", detailsArray[0]);
+                    intent.putExtra("date_festival", detailsArray[1]);
+                    intent.putExtra("description_festival", detailsArray[3]);
+                    intent.putExtra("ville_festival", detailsArray[4]);
+                    intent.putExtra("cdp_festival", detailsArray[5]);
                     startActivity(intent);
                 }
             });
