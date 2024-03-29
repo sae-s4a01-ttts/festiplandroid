@@ -1,15 +1,10 @@
 package festiplandroid.application;
 
-import androidx.activity.result.ActivityResultLauncher;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.ListView.FixedViewInfo;
-import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,21 +13,16 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class DetailsFestival extends AppCompatActivity {
+public class DetailsFestivalAcitivity extends AppCompatActivity {
 
     private ArrayAdapter<String> adapterSpectacles;
 
@@ -53,7 +43,7 @@ public class DetailsFestival extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detailsfestival);
 
-        appelleAPI();
+        appelAPI();
 
 //        listSpectacles = findViewById(R.id.listeSpectacles);
         listScenes = findViewById(R.id.listeScenes);
@@ -117,7 +107,7 @@ public class DetailsFestival extends AppCompatActivity {
      * Le résultat de la requête est affiché en sous la forme d'une chaîne de caractères.
      * A défaut, c'est un message d'erreur qui est affiché
      */
-    private void appelleAPI() {
+    private void appelAPI() {
         // le titre saisi par l'utilisateur est récupéré et encodé en UTF-8
 
         // le titre du film est insésré dans l'URL de recherche du film
@@ -139,7 +129,7 @@ public class DetailsFestival extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError erreur) {
-                        Toast.makeText(DetailsFestival.this, R.string.erreurAPI, Toast.LENGTH_LONG).show();
+                        Toast.makeText(DetailsFestivalAcitivity.this, R.string.erreurAPI, Toast.LENGTH_LONG).show();
                     }
                 });
         // la requête est placée dans la file d'attente des requêtes
@@ -163,7 +153,7 @@ public class DetailsFestival extends AppCompatActivity {
             affichageTableSpectacles(tableSpectacles);
 //            affichageTableOrganisateurs(tableOrganisateurs);
         } catch (JSONException e) {
-            Toast.makeText(DetailsFestival.this, R.string.erreurJSON, Toast.LENGTH_LONG).show();
+            Toast.makeText(DetailsFestivalAcitivity.this, R.string.erreurJSON, Toast.LENGTH_LONG).show();
         }
     }
 
@@ -189,7 +179,7 @@ public class DetailsFestival extends AppCompatActivity {
             codePostal.setText((tableFestival.getString("codePostal")));
 
         } catch (JSONException e) {
-            Toast.makeText(DetailsFestival.this, R.string.erreurJSON, Toast.LENGTH_LONG).show();
+            Toast.makeText(DetailsFestivalAcitivity.this, R.string.erreurJSON, Toast.LENGTH_LONG).show();
         }
     }
 
@@ -209,7 +199,7 @@ public class DetailsFestival extends AppCompatActivity {
             }
             categories.setText(categoriesString);
         } catch (JSONException e) {
-            Toast.makeText(DetailsFestival.this, R.string.erreurJSON, Toast.LENGTH_LONG).show();
+            Toast.makeText(DetailsFestivalAcitivity.this, R.string.erreurJSON, Toast.LENGTH_LONG).show();
         }
     }
 
@@ -233,7 +223,7 @@ public class DetailsFestival extends AppCompatActivity {
             spectacles.setText(spectaclesString);
             durees.setText(dureesString);
         } catch (JSONException e) {
-            Toast.makeText(DetailsFestival.this, R.string.erreurJSON, Toast.LENGTH_LONG).show();
+            Toast.makeText(DetailsFestivalAcitivity.this, R.string.erreurJSON, Toast.LENGTH_LONG).show();
         }
     }
     /**

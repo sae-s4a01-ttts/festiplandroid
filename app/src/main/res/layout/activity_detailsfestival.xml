@@ -6,7 +6,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".DetailsFestival"
+    tools:context=".DetailsFestivalAcitivity"
     android:fillViewport="true"
     android:background="@color/grey">
 
