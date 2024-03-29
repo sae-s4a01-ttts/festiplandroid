@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        String url = "http://10.0.2.2/SAE/festiplandroid/api/authentification";
+        String url = "http://10.0.2.2/festiplandroid/api/authentification";
 
         appelleAPI(url, postData);
     }

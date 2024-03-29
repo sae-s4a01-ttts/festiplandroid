@@ -2,10 +2,17 @@ package festiplandroid.application;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.SimpleAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -21,6 +28,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class ConsultationFestivalActivity extends AppCompatActivity {
 
@@ -44,32 +52,6 @@ public class ConsultationFestivalActivity extends AppCompatActivity {
         listeFestivals = findViewById(R.id.listeFestival);
 
         festivals = new ArrayList<HashMap<String, String>>();
-
-        /* stub pour test*/
-//        /* Creation d'un festival fictif, remplacé par un vrai a terme */
-//        HashMap<String,String> mHashMap = new HashMap<>();
-//        mHashMap.put("nomCle","Festival Test 1");
-//        mHashMap.put("dateCle","aujourd'hui");
-//        mHashMap.put("categorieCle","SAE");
-//        mHashMap.put("descriptionCle","blablablabal");
-//        mHashMap.put("villeCle","Rodez");
-//        mHashMap.put("codePostalCle","12000");
-//
-//        /* Ajout du festival à la liste */
-//        festivals.add(mHashMap);
-
-        /* Laison données avec classe customListView */
-        CustomListView customListView = new CustomListView(festivals,this);
-        listeFestivals.setAdapter(customListView);
-
-        listeFestivals.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, android.view.View view, int position, long id) {
-                // position contient l'indice de l'élément cliqué dans la ListView
-                // Vous pouvez faire ce que vous voulez avec cet élément, par exemple afficher un Toast
-                Toast.makeText(ConsultationFestivalActivity.this, "position : " + position, Toast.LENGTH_LONG).show();
-            }
-        });
     }
 
     private RequestQueue getFileRequete() {
@@ -115,27 +97,104 @@ public class ConsultationFestivalActivity extends AppCompatActivity {
      * @param donnees
      */
     private void affichageInfos(JSONArray donnees) {
-            try {
-                for (int i = 0; i < donnees.length(); i++) {
-                    JSONObject festival = donnees.getJSONObject(i);
-                    HashMap<String,String> mHashMap = new HashMap<>();
-                    mHashMap.put("nomCle", festival.getString("nomFestival"));
-                    mHashMap.put("dateCle", "Du " + festival.getString("dateDebutFestival")
-                                            + " au " + festival.getString("dateFinFestival"));
-                    /* STUB : categorie non envoyé */
-                    mHashMap.put("categorieCle","STUB");
-                    mHashMap.put("descriptionCle", festival.getString("descriptionFestival"));
-                    mHashMap.put("villeCle", festival.getString("ville"));
-                    mHashMap.put("codePostalCle", festival.getString("codePostal"));
+        try {
+            ArrayList<String> festivalDetails = new ArrayList<>();
 
-                    festivals.add(mHashMap);
-                }
-            } catch (JSONException e) {
-                Toast.makeText(ConsultationFestivalActivity.this, R.string.erreurJSON, Toast.LENGTH_LONG).show();
+            // Parcourir le JSONArray pour récupérer les détails de chaque festival
+            for (int i = 0; i < donnees.length(); i++) {
+                JSONObject festival = donnees.getJSONObject(i);
+                String nom = festival.getString("nomFestival");
+                String date = "Du " + festival.getString("dateDebutFestival") + " au " + festival.getString("dateFinFestival");
+                /* STUB : categorie non envoyé */
+                String categorie = "STUB";
+                String description = festival.getString("descriptionFestival");
+                String ville = festival.getString("ville");
+                String codePostal = festival.getString("codePostal");
+
+                // Concaténer les détails du festival
+                String festivalInfo = nom + "\n" + date + "\n" + categorie + "\n" + description + "\n" + ville + "\n" + codePostal;
+
+                // Ajouter les détails du festival à la liste
+                festivalDetails.add(festivalInfo);
             }
-//        Toast.makeText(ConsultationFestivalActivity.this, "ca marche :)", Toast.LENGTH_LONG).show();
-        /* Laison données avec classe customListView */
-        CustomListView customListView = new CustomListView(festivals,this);
-        listeFestivals.setAdapter(customListView);
+
+            // Créer un adaptateur personnalisé pour utiliser le layout festival
+            FestivalAdapter adapter = new FestivalAdapter(this, R.layout.festival, festivalDetails);
+
+            // Associer l'adaptateur à la ListView
+            listeFestivals.setAdapter(adapter);
+
+            // Ajout d'un listener sur la liste pour gérer les clics sur les éléments
+            listeFestivals.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    // Récupérer les détails du festival sélectionné
+                    String festivalInfo = festivalDetails.get(position);
+
+                    // Rediriger vers DetailsFestivalActivity avec les détails du festival
+                    Intent intent = new Intent(ConsultationFestivalActivity.this, festiplandroid.application.DetailsFestivalAcitivity.class);
+                    intent.putExtra("festivalInfo", festivalInfo);
+                    startActivity(intent);
+                }
+            });
+
+        } catch (JSONException e) {
+            Toast.makeText(ConsultationFestivalActivity.this, R.string.erreurJSON, Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private class FestivalAdapter extends ArrayAdapter<String> {
+        private ArrayList<String> festivalDetails;
+        private Context mContext;
+
+        public FestivalAdapter(Context context, int resource, ArrayList<String> details) {
+            super(context, resource, details);
+            this.mContext = context;
+            this.festivalDetails = details;
+        }
+
+        @Override
+        public View getView(final int position, View convertView, ViewGroup parent) {
+            LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            View rowView = inflater.inflate(R.layout.festival, parent, false);
+
+            // Trouver les vues dans le layout personnalisé
+            TextView nomTextView = rowView.findViewById(R.id.titreFestival);
+            TextView dateTextView = rowView.findViewById(R.id.date);
+            TextView categorieTextView = rowView.findViewById(R.id.categorie);
+            TextView descriptionTextView = rowView.findViewById(R.id.description);
+            TextView villeTextView = rowView.findViewById(R.id.ville);
+            TextView codePostalTextView = rowView.findViewById(R.id.codePostal);
+
+            // Extraire les détails du festival pour la position actuelle
+            String festivalInfo = festivalDetails.get(position);
+            String[] detailsArray = festivalInfo.split("\n");
+
+            // Afficher les détails dans les vues correspondantes
+            nomTextView.setText(detailsArray[0]);
+            dateTextView.setText(detailsArray[1]);
+            categorieTextView.setText(detailsArray[2]);
+            descriptionTextView.setText(detailsArray[3]);
+            villeTextView.setText(detailsArray[4]);
+            codePostalTextView.setText(detailsArray[5]);
+
+            // Ajout d'un listener sur l'élément de la liste pour gérer les clics
+            rowView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // Récupérer les détails du festival sélectionné
+                    String festivalInfo = festivalDetails.get(position);
+
+                    // Afficher les détails du festival dans un Toast
+                    Toast.makeText(mContext, festivalInfo, Toast.LENGTH_LONG).show();
+
+                    Intent intent = new Intent(ConsultationFestivalActivity.this, festiplandroid.application.DetailsFestivalAcitivity.class);
+                    intent.putExtra("festivalInfo", festivalInfo);
+                    startActivity(intent);
+                }
+            });
+
+            return rowView;
+        }
     }
 }
