@@ -30,7 +30,7 @@
             <Button
                 android:layout_height="match_parent"
                 android:background="@color/transparent"
-                android:text="Mes favoris" />
+                android:text="@string/btnRetour" />
         </TableRow>
 
         <TableRow>

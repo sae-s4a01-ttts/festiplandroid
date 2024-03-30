@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ConsultationFestivalActivity"
+    tools:context=".ConsultationFestivalFavorisActivity"
     android:stretchColumns="0"
     android:background="@color/grey">
 
@@ -20,10 +20,10 @@
             android:src="@drawable/logofestiplan" />
 
         <Button
-            android:onClick="affichageFavoris"
+            android:onClick="retour"
             android:layout_height="match_parent"
             android:background="@color/transparent"
-            android:text="Mes favoris" />
+            android:text="@string/btnRetour" />
     </TableRow>
 
     <TableRow>

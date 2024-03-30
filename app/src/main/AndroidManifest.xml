@@ -23,6 +23,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".ConsultationFestivalActivity" />
+        <activity android:name=".ConsultationFestivalFavorisActivity" />
         <activity android:name=".DetailsFestivalAcitivity" />
     </application>
 

@@ -31,4 +31,6 @@
 
     <string name="erreurAPI">"connexion API impossible"</string>
     <string name="erreurJSON">"problème traitement données"</string>
+
+    <string name="btnRetour">Retour</string>
 </resources>

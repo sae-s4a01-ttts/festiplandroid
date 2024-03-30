@@ -1,7 +1,5 @@
 package festiplandroid.application;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,9 +9,10 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -28,9 +27,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
-public class ConsultationFestivalActivity extends AppCompatActivity {
+public class ConsultationFestivalFavorisActivity extends AppCompatActivity {
 
     private ListView listeFestivals;
 
@@ -43,7 +41,7 @@ public class ConsultationFestivalActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.consultation_festival);
+        setContentView(R.layout.consultation_festival_favoris);
 
         /* Récupération de l'ID de l'utilisateur */
         Intent intention = getIntent();
@@ -68,7 +66,7 @@ public class ConsultationFestivalActivity extends AppCompatActivity {
         // le titre saisi par l'utilisateur est récupéré et encodé en UTF-8
 
         // le titre du film est insésré dans l'URL de recherche du film
-        String url = "http://10.0.2.2/festiplandroid/api/listefestivals";
+        String url = "http://10.0.2.2/festiplandroid/api/listefestivalsfavoris/" + idUserAuth;
         /*
          * on crée une requête GET, paramètrée par l'url préparée ci-dessus,
          * Le résultat de cette requête sera une chaîne de caractères, donc la requête
@@ -86,7 +84,7 @@ public class ConsultationFestivalActivity extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError erreur) {
-                        Toast.makeText(ConsultationFestivalActivity.this, R.string.erreurAPI, Toast.LENGTH_LONG).show();
+                        Toast.makeText(ConsultationFestivalFavorisActivity.this, R.string.erreurAPI, Toast.LENGTH_LONG).show();
                     }
                 });
         // la requête est placée dans la file d'attente des requêtes
@@ -134,14 +132,14 @@ public class ConsultationFestivalActivity extends AppCompatActivity {
                     String festivalInfo = festivalDetails.get(position);
 
                     // Rediriger vers DetailsFestivalActivity avec les détails du festival
-                    Intent intent = new Intent(ConsultationFestivalActivity.this, festiplandroid.application.DetailsFestivalAcitivity.class);
+                    Intent intent = new Intent(ConsultationFestivalFavorisActivity.this, DetailsFestivalAcitivity.class);
                     intent.putExtra("festivalInfo", festivalInfo);
                     startActivity(intent);
                 }
             });
 
         } catch (JSONException e) {
-            Toast.makeText(ConsultationFestivalActivity.this, R.string.erreurJSON, Toast.LENGTH_LONG).show();
+            Toast.makeText(ConsultationFestivalFavorisActivity.this, R.string.erreurJSON, Toast.LENGTH_LONG).show();
         }
     }
 
@@ -187,7 +185,7 @@ public class ConsultationFestivalActivity extends AppCompatActivity {
                     // Récupérer les détails du festival sélectionné
                     String festivalInfo = festivalDetails.get(position);
 
-                    Intent intent = new Intent(ConsultationFestivalActivity.this, festiplandroid.application.DetailsFestivalAcitivity.class);
+                    Intent intent = new Intent(ConsultationFestivalFavorisActivity.this, DetailsFestivalAcitivity.class);
                     intent.putExtra("nom_festival", detailsArray[0]);
                     intent.putExtra("date_festival", detailsArray[1]);
                     intent.putExtra("categories_festival", detailsArray[2]);
@@ -203,9 +201,7 @@ public class ConsultationFestivalActivity extends AppCompatActivity {
         }
     }
 
-    public void affichageFavoris(View vue) {
-        Intent intentionFavoris = new Intent(this, ConsultationFestivalFavorisActivity.class);
-        intentionFavoris.putExtra(MainActivity.CLE_ID, idUserAuth);
-        startActivity(intentionFavoris);
+    public void retour(View vue) {
+        finish();
     }
 }
