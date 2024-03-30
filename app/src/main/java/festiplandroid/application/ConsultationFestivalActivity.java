@@ -103,16 +103,16 @@ public class ConsultationFestivalActivity extends AppCompatActivity {
             // Parcourir le JSONArray pour récupérer les détails de chaque festival
             for (int i = 0; i < donnees.length(); i++) {
                 JSONObject festival = donnees.getJSONObject(i);
+                String id = festival.getString("idFestival");
                 String nom = festival.getString("nomFestival");
                 String date = "Du " + festival.getString("dateDebutFestival") + " au " + festival.getString("dateFinFestival");
-                /* STUB : categorie non envoyé */
-                String categorie = "STUB";
+                String categorie = festival.getString("nomCategorie");
                 String description = festival.getString("descriptionFestival");
                 String ville = festival.getString("ville");
                 String codePostal = festival.getString("codePostal");
 
                 // Concaténer les détails du festival
-                String festivalInfo = nom + "\n" + date + "\n" + categorie + "\n" + description + "\n" + ville + "\n" + codePostal;
+                String festivalInfo = nom + "\n" + date + "\n" + categorie + "\n" + description + "\n" + ville + "\n" + codePostal + "\n" + id;
 
                 // Ajouter les détails du festival à la liste
                 festivalDetails.add(festivalInfo);
@@ -191,9 +191,11 @@ public class ConsultationFestivalActivity extends AppCompatActivity {
                     Intent intent = new Intent(ConsultationFestivalActivity.this, festiplandroid.application.DetailsFestivalAcitivity.class);
                     intent.putExtra("nom_festival", detailsArray[0]);
                     intent.putExtra("date_festival", detailsArray[1]);
+                    intent.putExtra("categories_festival", detailsArray[2]);
                     intent.putExtra("description_festival", detailsArray[3]);
                     intent.putExtra("ville_festival", detailsArray[4]);
                     intent.putExtra("cdp_festival", detailsArray[5]);
+                    intent.putExtra("id_festival", detailsArray[6]);
                     startActivity(intent);
                 }
             });

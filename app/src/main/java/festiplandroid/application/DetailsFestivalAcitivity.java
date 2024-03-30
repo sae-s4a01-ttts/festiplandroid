@@ -14,6 +14,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
@@ -25,19 +26,9 @@ import java.util.Arrays;
 
 public class DetailsFestivalAcitivity extends AppCompatActivity {
 
-    private ArrayAdapter<String> adapterSpectacles;
-
-    private ArrayAdapter<String> adapterScenes;
-
-    private ArrayAdapter<String> adapterOrganisateurs;
-
-//    private ListView listSpectacles;
-
-    private ListView listScenes;
-
-    private ListView listOrganisateurs;
-
+    private String idFestivalInt;
     private String nomFestivalInt;
+    private String categoriesFestivalInt;
     private String dateFestivalInt;
     private String descriptionFestivalInt;
     private String villeFestivalInt;
@@ -50,53 +41,21 @@ public class DetailsFestivalAcitivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detailsfestival);
 
-        appelAPI();
+        // recupération donné de l'intention
         Intent intention = getIntent();
+        idFestivalInt = intention.getStringExtra("id_festival");
         nomFestivalInt = intention.getStringExtra("nom_festival");
+        categoriesFestivalInt = intention.getStringExtra("categories_festival");
         dateFestivalInt = intention.getStringExtra("date_festival");
         descriptionFestivalInt = intention.getStringExtra("description_festival");
         villeFestivalInt = intention.getStringExtra("ville_festival");
         cdpFestivalInt = intention.getStringExtra("cdp_festival");
 
-//      listSpectacles = findViewById(R.id.listeSpectacles);
-        listScenes = findViewById(R.id.listeScenes);
-        listOrganisateurs = findViewById(R.id.listeOrganisateurs);
+        // Appel de l'API et affichage des infos
+        appelAPI(idFestivalInt);
 
-        // valeur de test
-        ArrayList<String> spectaclesTest = new ArrayList<>();
-        ArrayList<String> scenesTest = new ArrayList<>();
-        ArrayList<String> organisateursTest = new ArrayList<>();
-
-        spectaclesTest.addAll(Arrays.asList("spectacle1","spectacle2", "spectacle3"));
-        scenesTest.addAll(Arrays.asList("scene1", "scene2", "scene3"));
-        organisateursTest.addAll(Arrays.asList("Lacam Samuel samuel.lacam@iut-rodez.fr",
-                                               "Lemaire Thomas thomas.lemaire@iut-rodez.fr"));
-
-        adapterSpectacles = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, spectaclesTest);
-        adapterScenes = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, scenesTest);
-        adapterOrganisateurs = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, organisateursTest);
-
-//      listSpectacles.setAdapter(adapterSpectacles);
-        listScenes.setAdapter((adapterScenes));
-        listOrganisateurs.setAdapter(adapterOrganisateurs);
-
-//      listSpectacles.setScrollContainer(false);
-        listScenes.setScrollContainer(false);
-        listOrganisateurs.setScrollContainer(false);
-
-//        ArrayList<TextView> spt = new ArrayList<>();
-//        TextView sp1 = new TextView(this);
-//        TextView sp2 = new TextView(this);
-//        TextView sp3 = new TextView(this);
-//        sp1.setText("spectacle 1&");
-//        sp2.setText("spectacle 2&");
-//        sp3.setText("spectacle 3&");
-//        spt.add(sp1);
-//        spt.add(sp2);
-//        spt.add(sp3);
-//        sp1.setTextColor(getColor(R.color.white));
-//        ArrayAdapter<TextView> adpsp = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, spt);
-//        listSpectacles.setAdapter(adpsp);
+        // affichage des donné de l'intention
+        affichageInfosIntention();
     }
 
     /**
@@ -120,22 +79,22 @@ public class DetailsFestivalAcitivity extends AppCompatActivity {
      * Le résultat de la requête est affiché en sous la forme d'une chaîne de caractères.
      * A défaut, c'est un message d'erreur qui est affiché
      */
-    private void appelAPI() {
+    private void appelAPI(String idFestival) {
         // le titre saisi par l'utilisateur est récupéré et encodé en UTF-8
 
         // le titre du film est insésré dans l'URL de recherche du film
-        String url = "http://10.0.2.2/festiplandroid/api/infosfestival/1";
+        String url = "http://10.0.2.2/festiplandroid/api/infosfestival/" + idFestival;
         /*
          * on crée une requête GET, paramètrée par l'url préparée ci-dessus,
          * Le résultat de cette requête sera une chaîne de caractères, donc la requête
          * est de type StringRequest
          */
-        JsonArrayRequest requeteVolley = new JsonArrayRequest(Request.Method.GET, url, null,
+        JsonObjectRequest requeteVolley = new JsonObjectRequest(Request.Method.GET, url, null,
                 // écouteur de la réponse renvoyée par la requête
-                new Response.Listener<JSONArray>() {
+                new Response.Listener<JSONObject>() {
                     @Override
-                    public void onResponse(JSONArray reponse) {
-                        affichageInfos(reponse);
+                    public void onResponse(JSONObject reponse) {
+                        affichageInfosAPI(reponse);
                     }
                 },
                 // écouteur du retour de la requête si aucun résultat n'est renvoyé
@@ -150,101 +109,128 @@ public class DetailsFestivalAcitivity extends AppCompatActivity {
     }
 
     /**
-     * Affecte les informations du festival aux TextView
+     * Affecte les informations du festival
+     * provenant de l'API aux TextView
      *
      * @param donnees donnees transmise par l'API
      */
-    private void affichageInfos(JSONArray donnees) {
+    private void affichageInfosAPI(JSONObject donnees) {
         try {
-            JSONObject tableFestival = donnees.getJSONObject(0);
-            JSONArray tableCategories = (JSONArray) donnees.get(1);
-            JSONArray tableSpectacles = (JSONArray) donnees.get(2);
-//            JSONArray tableOrganisateurs = (JSONArray) donnees.get(3);
+            JSONArray spectacles = donnees.getJSONArray("spectacles");
+            JSONObject responsable = donnees.getJSONObject("responsable");
+            JSONArray organisateurs = donnees.getJSONArray("organisateurs");
 
-            affichageTableFestival(tableFestival);
-            affichageTableCategories(tableCategories);
-            affichageTableSpectacles(tableSpectacles);
-//            affichageTableOrganisateurs(tableOrganisateurs);
+            affichageSpectacles(spectacles);
+            affichageResponsable(responsable);
+            affichageOrganisateurs(organisateurs);
         } catch (JSONException e) {
             Toast.makeText(DetailsFestivalAcitivity.this, R.string.erreurJSON, Toast.LENGTH_LONG).show();
         }
     }
 
     /**
-     * Affecte les informations de la table festival aux TextView
-     *
-     * @param tableFestival donnees de la table festival
+     * Affecte les informations du festival de l'intention
+     * (de l'activité parente) aux TextView
      */
-    private void affichageTableFestival(JSONObject tableFestival) {
+    private void affichageInfosIntention() {
         TextView nomFestival = findViewById(R.id.titreFestival);
-        TextView description = findViewById(R.id.description);
+        TextView categories = findViewById(R.id.categorie);
         TextView dates = findViewById(R.id.date);
         TextView ville = findViewById(R.id.ville);
         TextView codePostal = findViewById(R.id.codePostal);
+        TextView description = findViewById(R.id.description);
 
-        try {
-            nomFestival.setText(nomFestivalInt);
-            description.setText(descriptionFestivalInt);
-            dates.setText(String.format("Du %s\nau %s",
-                          tableFestival.get("dateDebutFestival"),
-                          tableFestival.get("dateFinFestival")));
-            ville.setText(villeFestivalInt);
-            codePostal.setText(cdpFestivalInt);
-
-        } catch (JSONException e) {
-            Toast.makeText(DetailsFestivalAcitivity.this, R.string.erreurJSON, Toast.LENGTH_LONG).show();
-        }
+        nomFestival.setText(nomFestivalInt);
+        categories.setText(categoriesFestivalInt);
+        dates.setText(dateFestivalInt);
+        ville.setText(villeFestivalInt);
+        codePostal.setText(cdpFestivalInt);
+        description.setText(descriptionFestivalInt);
     }
 
     /**
-     * Affecte les informations de la table categories aux TextView
+     * Affichage des informations de spectacles aux TextView associé
      *
-     * @param tableCategories donnees de la table categorie
+     * @param donneesSpectacles données à afficher
      */
-    private void affichageTableCategories(JSONArray tableCategories) {
-        TextView categories = findViewById(R.id.categorie);
-
-        StringBuilder categoriesString = new StringBuilder();
-        try {
-            for (int i = 0; i < tableCategories.length(); i++) {
-                JSONObject categorie = tableCategories.getJSONObject(i);
-                categoriesString.append(categorie.getString("nomCategorie") + " ");
-            }
-            categories.setText(categoriesString);
-        } catch (JSONException e) {
-            Toast.makeText(DetailsFestivalAcitivity.this, R.string.erreurJSON, Toast.LENGTH_LONG).show();
-        }
-    }
-
-    /**
-     * Affecte les informations de la table spectacles aux TextView
-     *
-     * @param tableSpectacles donnees de la table spectacles
-     */
-    private void affichageTableSpectacles(JSONArray tableSpectacles) {
+    private void affichageSpectacles(JSONArray donneesSpectacles) {
         TextView spectacles = findViewById(R.id.spectacles);
         TextView durees = findViewById(R.id.dureeSpectacles);
 
         StringBuilder spectaclesString = new StringBuilder();
         StringBuilder dureesString = new StringBuilder();
+
         try {
-            for (int i = 0; i < tableSpectacles.length(); i++) {
-                JSONObject spectacle = tableSpectacles.getJSONObject(i);
+            for (int i = 0; i < donneesSpectacles.length(); i++) {
+                JSONObject spectacle = donneesSpectacles.getJSONObject(i);
                 spectaclesString.append(spectacle.getString("titreSpectacle") + "\n");
                 dureesString.append(spectacle.getString("dureeSpectacle") + "\n");
             }
-            spectacles.setText(spectaclesString);
-            durees.setText(dureesString);
+            if (spectaclesString.length() > 0
+                    && dureesString.length() > 0) {
+                String affichageSpectacle
+                        = spectaclesString.substring(0, spectaclesString.length() -1);
+                String affichageDuree =
+                        dureesString.substring(0, dureesString.length() -1);
+
+                spectacles.setText(affichageSpectacle);
+                durees.setText(affichageDuree);
+            } else {
+                spectacles.setText("non précisé");
+            }
         } catch (JSONException e) {
             Toast.makeText(DetailsFestivalAcitivity.this, R.string.erreurJSON, Toast.LENGTH_LONG).show();
         }
     }
-    /**
-     * Affecte les informations de la table organisateurs aux TextView
-     *
-     * @param tableOrganisateurs donnees de la table organisateurs
-     */
-    private void affichageTableOrganisateurs(JSONArray tableOrganisateurs) {
 
+    /**
+     * Affichage des informations des organisateurs
+     * aux TextView associé
+     *
+     * @param donneesOrganisateurs données à afficher
+     */
+    private void affichageOrganisateurs(JSONArray donneesOrganisateurs) {
+        TextView organisateurs = findViewById(R.id.organisateurs);
+        TextView test = findViewById(R.id.labelOrganisateurs);
+
+        StringBuilder organisateursString = new StringBuilder();
+        try {
+            for (int i = 0; i < donneesOrganisateurs.length(); i++) {
+                JSONObject organisateur = donneesOrganisateurs.getJSONObject(i);
+                organisateursString.append("- " + organisateur.getString("nomUser") + " "
+                                           + organisateur.getString("prenomUser") + "\n  "
+                                           + organisateur.get("emailUser") + "\n");
+            }
+//            test.setText(String.valueOf(organisateursString.length()));
+            if (organisateursString.length() > 0) {
+                String affichageOrganisateurs =
+                        organisateursString.substring(0, organisateursString.length() -1);
+                organisateurs.setText(affichageOrganisateurs);
+            } else {
+                organisateurs.setText("non précisé");
+            }
+        } catch (JSONException e) {
+            Toast.makeText(DetailsFestivalAcitivity.this, R.string.erreurJSON, Toast.LENGTH_LONG).show();
+        }
+    }
+
+    /**
+     * Affichage des informations du responsable
+     * aux TextView associé
+     *
+     * @param donneesResponsable données à afficher
+     */
+    private void affichageResponsable(JSONObject donneesResponsable) {
+        TextView responsable = findViewById(R.id.responsable);
+
+        StringBuilder responsableString = new StringBuilder();
+        try {
+            responsableString.append("- " + donneesResponsable.getString("nomUser") + " "
+                                     + donneesResponsable.getString("prenomUser") + "\n  "
+                                     + donneesResponsable.getString("emailUser"));
+            responsable.setText(responsableString);
+        } catch (JSONException e) {
+            Toast.makeText(DetailsFestivalAcitivity.this, R.string.erreurJSON, Toast.LENGTH_LONG).show();
+        }
     }
 }
