@@ -18,3 +18,7 @@ La deuxième version de cette application vise deux objectifs:
 # lien vers le dossier Google Drive
 
 https://drive.google.com/drive/folders/0ANIdoAsnlOn3Uk9PVA
+
+# lien vers le dossier Github Projects
+
+https://github.com/orgs/sae-s4a01-ttts/projects/6
